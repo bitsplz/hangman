@@ -4,6 +4,9 @@ import Header from './components/header.jsx';
 import Figure from './components/figure.jsx';
 import WrongLetters from './components/wrongletters.jsx';
 import Word from './components/word';
+import Popup from './components/popup.jsx';
+import Notification from './components/notification.jsx';
+import {showNotification as show} from './helpers/helpers.jsx';
 
 const words = ['application', 'programming', 'interface', 'wizard'];
 let selectedWord = words[Math.floor(Math.random() * words.length)];
@@ -25,13 +28,13 @@ function App() {
             if (!correctLetters.includes(letter)) {
               setCorrectLetters(currentLetters=>[...currentLetters,letter]);
             } else {
-              //showNotification();
+              show(setShowNotification);
             }
           } else {
             if (!wrongLetters.includes(letter)) {
               setWrongLetters(wrongLetters=>[...wrongLetters,letter]);
             } else {
-              //showNotification();
+              showNotification(setShowNotification);
             }
           }
         }
@@ -39,6 +42,16 @@ function App() {
     window.addEventListener('keydown',handleKeydown);
     return()=>window.removeEventListener('keydown',handleKeydown);//clean event listeners
   },[correctLetters, wrongLetters, playable]);//when these are updated function is called
+
+
+  function playAgain() {
+    setPlayable(true);
+    // Empty Arrays
+    setCorrectLetters([]);
+    setWrongLetters([]);
+    const random = Math.floor(Math.random() * words.length);
+    selectedWord = words[random];
+  }
 
   return (
     <>
@@ -48,6 +61,8 @@ function App() {
         <WrongLetters wrongLetters={wrongLetters}/>
         <Word selectedWord={selectedWord} correctLetters={correctLetters}/>
       </div>
+      <Popup correctLetters={correctLetters} wrongLetters={wrongLetters} selectedWord={selectedWord} setPlayable={setPlayable} playAgain={playAgain} />
+        <Notification showNotification={showNotification}/>
     </>
   );
 }
