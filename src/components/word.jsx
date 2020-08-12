@@ -1,9 +1,18 @@
 import React from 'react';
 
-const Word = () => {
+const Word = ({ selectedWord, correctLetters }) => {
     return (
-        <div class="word" id="word"></div>
-    )
+        <div className="word" id="word">
+            {selectedWord.split('').map((letter,i) => {
+                
+                return(
+                <span key={i}className="letter">
+                    {correctLetters.includes(letter) ? letter : ''}
+                </span>
+                )
+            })}
+        </div>
+    )   
 }
 
 export default Word
